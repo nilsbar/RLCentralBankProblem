@@ -1,0 +1,9 @@
+numpy == 2.0.1
+
+pandas == 2.2.2
+
+torch == 2.4.0
+
+gym == 0.26.2
+
+stable_baselines3 == 2.3.2
