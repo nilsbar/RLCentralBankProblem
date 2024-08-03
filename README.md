@@ -12,6 +12,6 @@ Data for interest rates: https://fred.stlouisfed.org/series/FEDFUNDS
 
 Model:
 
-state-space: (inflation rate, percentage of GDP and potential GDP)
+state-space: (economical data of the past 10 years except the current interest rate)
 action-space: interest rate
 
