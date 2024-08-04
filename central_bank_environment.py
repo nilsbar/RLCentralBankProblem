@@ -32,16 +32,19 @@ class CentralBankEnvironment(gym.Env):
             output_tensor = self.economic_model(input_tensor)[-1,:]
         economic_output = output_tensor.cpu().detach().numpy()
 
+        # inflation rate
+        inflation_rate = economic_output[-1]
+
         # new economic result is the output of the model + action
-        new_economic = economic_output 
+        new_economic = np.append(economic_output, action)
+        new_economic = new_economic[np.newaxis, :] # transform the 1-dim array to a 2-dim with one row
 
         # new state is the first row dropped and new_economic added below
-
-        # observation model simulation + action added
-        observation = None
+        self.state = self.state[1:]
+        self.state = np.append(self.state, new_economic, axis=0)
 
         # reward |2% - inflation rate|
-        reward = abs(2 - 0)
+        reward = abs(2 - inflation_rate)
 
         terminated = None
 
@@ -49,7 +52,7 @@ class CentralBankEnvironment(gym.Env):
 
         info = None 
 
-        return observation, reward, terminated, truncated, info
+        return self.state, reward, terminated, truncated, info
     
     def reset(self):
 
