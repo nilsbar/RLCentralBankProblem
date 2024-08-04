@@ -12,8 +12,11 @@ class CentralBankEnvironment(gym.Env):
         # action spaces (interest rate -> real numbers between -0.5 and 0.5)
         self.action_space = spaces.Box(low=-0.5, high=0.5, shape=(1,), dtype=np.float32)
 
+        # time horizon of the lookback
+        self.lookback = 10
+
         # observation spaces
-        self.observation_space = spaces.Box(low=-2**63, high=2**63 - 2, shape=(10, 79), dtype=np.float32)
+        self.observation_space = spaces.Box(low=-2**63, high=2**63 - 2, shape=(self.lookback, 79), dtype=np.float32)
 
         # initial space 
         self.state = np.loadtxt('initial_state.txt', delimiter=',').astype(np.float32)
@@ -51,7 +54,7 @@ class CentralBankEnvironment(gym.Env):
 
         terminated = False
         
-        if self.step_counter <= 20:
+        if self.step_counter <= self.max_steps:
             truncated = False
         else: 
             truncated = True
