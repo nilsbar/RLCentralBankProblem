@@ -15,8 +15,8 @@ class CentralBankEnvironment(gym.Env):
         # observation spaces
         self.observation_space = spaces.Box(low=-2**63, high=2**63 - 2, shape=(10, 79), dtype=np.float32)
 
-        # initial space
-        self.space = np.loadtxt('initial_state.txt', delimiter=',')
+        # initial space 
+        self.state = np.loadtxt('initial_state.txt', delimiter=',').astype(np.float32)
 
         # neuronal network which approximates the economy
         model_loader = economic_model.ModelLoader()
@@ -26,7 +26,6 @@ class CentralBankEnvironment(gym.Env):
         
         # economic_simulation
         input_tensor = torch.from_numpy(self.state)
-        torch.from_numpy(input_tensor)
         input_tensor = input_tensor.to(torch.float32)
         with torch.no_grad():  # Keine Gradientenberechnung erforderlich
             output_tensor = self.economic_model(input_tensor)[-1,:]
@@ -46,14 +45,16 @@ class CentralBankEnvironment(gym.Env):
         # reward |2% - inflation rate|
         reward = abs(2 - inflation_rate)
 
-        terminated = None
+        terminated = False
 
-        truncated = None
+        truncated = False
 
-        info = None 
+        info = {} 
 
         return self.state, reward, terminated, truncated, info
     
-    def reset(self):
+    def reset(self, seed = None):
 
-        self.space = np.loadtxt('initial_state.txt', delimiter=',')
+        self.space = np.loadtxt('initial_state.txt', delimiter=',').astype(np.float32)
+
+        return self.space, {}
