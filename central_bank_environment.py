@@ -21,6 +21,10 @@ class CentralBankEnvironment(gym.Env):
         # neuronal network which approximates the economy
         model_loader = economic_model.ModelLoader()
         self.economic_model = model_loader.model
+
+        # maximum steps
+        self.step_counter = 0
+        self.max_steps = 20
     
     def step(self, action):
         
@@ -46,8 +50,11 @@ class CentralBankEnvironment(gym.Env):
         reward = abs(2 - inflation_rate)
 
         terminated = False
-
-        truncated = False
+        
+        if self.step_counter <= 20:
+            truncated = False
+        else: 
+            truncated = True
 
         info = {} 
 
