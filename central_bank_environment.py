@@ -4,6 +4,7 @@ from gymnasium import spaces
 import economic_model
 
 class CentralBankEnvironment(gym.Env):
+    
     def __init__(self) -> None:
         super().__init__()
 
@@ -20,4 +21,16 @@ class CentralBankEnvironment(gym.Env):
         model_loader = economic_model.ModelLoader()
         self.economic_simulation = model_loader.model
     
-    
+    def step(self, action):
+        
+        # observation model simulation + action added
+
+        # reward |2% - inflation rate|
+        
+        terminated = None
+
+        truncated = None
+
+        info = None 
+
+        return observation, reward, terminated, truncated, info
