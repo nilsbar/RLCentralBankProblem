@@ -11,9 +11,14 @@ import torch.utils.data as data
 class EcoModel(nn.Module):
     def __init__(self):
         super().__init__()
-        self.lstm1 = nn.LSTM(input_size=79, hidden_size=15, num_layers=2, batch_first=False)
+        input_dim = 79
+        hidden_dim = 15
+        layer_dim = 2
+        output_dim = input_dim - 1 
+
+        self.lstm1 = nn.LSTM(input_size=input_dim, hidden_size=hidden_dim, num_layers=layer_dim, batch_first=False)
         # reduce from 80 to 79 and adjust the target data of the train data with dropped interest rate
-        self.linear = nn.Linear(15, 78)
+        self.linear = nn.Linear(hidden_dim, output_dim)
     def forward(self, x):
         x, _ = self.lstm1(x)
         x = self.linear(x)
@@ -25,3 +30,7 @@ class ModelLoader():
         self.model = EcoModel()
         self.model.load_state_dict(torch.load("model_weights.pth"))
         self.model.eval()
+
+if __name__ == "__main__":
+    # train the neural network
+    pass
