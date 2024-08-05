@@ -24,5 +24,9 @@ Problems:
 
 - time series model for the economy needs to be adjusted
 
+- The parameters in the init-function of the gym env needs to be paramaters of the function, so gym envs can be set with custom parameters.
+
+- EcoModel needs to be a class and the specific model is inherited by it because then it is possible to set up gym environments for custom neural networks
+
 
 
