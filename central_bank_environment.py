@@ -15,8 +15,11 @@ class CentralBankEnvironment(gym.Env):
         # time horizon of the lookback
         self.lookback = 10
 
+        # number of parameters of the economy (interest rate included)
+        economical_parameters = 78 
+
         # observation spaces
-        self.observation_space = spaces.Box(low=-2**63, high=2**63 - 2, shape=(self.lookback, 79), dtype=np.float32)
+        self.observation_space = spaces.Box(low=-2**63, high=2**63 - 2, shape=(self.lookback, economical_parameters), dtype=np.float32)
 
         # initial space 
         self.state = np.loadtxt('initial_state.txt', delimiter=',').astype(np.float32)
